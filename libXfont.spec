@@ -4,7 +4,7 @@
 #
 Name     : libXfont
 Version  : 1.5.2
-Release  : 7
+Release  : 8
 URL      : http://xorg.freedesktop.org/releases/individual/lib/libXfont-1.5.2.tar.gz
 Source0  : http://xorg.freedesktop.org/releases/individual/lib/libXfont-1.5.2.tar.gz
 Summary  : X font Library
