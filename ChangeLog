@@ -1,3 +1,37 @@
+commit f581c2346d025d5b15926db9e58f254173fb58dc
+Author: Matt Turner <mattst88@gmail.com>
+Date:   Thu Oct 19 13:45:58 2017 -0700
+
+    libXfont 1.5.3
+    
+    Signed-off-by: Matt Turner <mattst88@gmail.com>
+
+commit 3b08934dca75e4c559db7d83797bc3d365c2a50a
+Author: Michal Srb <msrb@suse.com>
+Date:   Thu Jul 20 17:05:23 2017 +0200
+
+    pcfGetProperties: Check string boundaries (CVE-2017-13722)
+    
+    Without the checks a malformed PCF file can cause the library to make
+    atom from random heap memory that was behind the `strings` buffer.
+    This may crash the process or leak information.
+    
+    Signed-off-by: Julien Cristau <jcristau@debian.org>
+    (cherry picked from commit 672bb944311392e2415b39c0d63b1e1902905bcd)
+
+commit a2a5fa591762b430037e33f1df55b460550ab406
+Author: Michal Srb <msrb@suse.com>
+Date:   Thu Jul 20 13:38:53 2017 +0200
+
+    Check for end of string in PatternMatch (CVE-2017-13720)
+    
+    If a pattern contains '?' character, any character in the string is skipped,
+    even if it is '\0'. The rest of the matching then reads invalid memory.
+    
+    Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
+    Signed-off-by: Julien Cristau <jcristau@debian.org>
+    (cherry picked from commit d1e670a4a8704b8708e493ab6155589bcd570608)
+
 commit 8cce9834b2e74dccad94ca0adf79ae5585e37d48
 Author: Adam Jackson <ajax@redhat.com>
 Date:   Wed Aug 31 16:19:11 2016 -0400
@@ -16,21 +50,21 @@ Date:   Mon May 30 00:46:21 2016 -0700
     
     Found by clang's Address Sanitizer
     
-    	crac.num_auths = set_font_authorizations(&authorizations, &authlen,
-    						 client);
-    	/* Work around bug in xfs versions up through modular release 1.0.8
-    	   which rejects CreateAC packets with num_auths = 0 & authlen < 4 */
-    	if (crac.num_auths == 0) {
-    	    authorizations = padding;
-    	    authlen = 4;
-    	} else {
-    	    authlen = (authlen + 3) & ~0x3;
-    	}
-    	crac.length = (sizeof (fsCreateACReq) + authlen) >> 2;
-    	crac.acid = cur->acid;
-    	_fs_add_req_log(conn, FS_CreateAC);
-    	_fs_write(conn, (char *) &crac, sizeof (fsCreateACReq));
-    	_fs_write(conn, authorizations, authlen);
+            crac.num_auths = set_font_authorizations(&authorizations, &authlen,
+                                                     client);
+            /* Work around bug in xfs versions up through modular release 1.0.8
+               which rejects CreateAC packets with num_auths = 0 & authlen < 4 */
+            if (crac.num_auths == 0) {
+                authorizations = padding;
+                authlen = 4;
+            } else {
+                authlen = (authlen + 3) & ~0x3;
+            }
+            crac.length = (sizeof (fsCreateACReq) + authlen) >> 2;
+            crac.acid = cur->acid;
+            _fs_add_req_log(conn, FS_CreateAC);
+            _fs_write(conn, (char *) &crac, sizeof (fsCreateACReq));
+            _fs_write(conn, authorizations, authlen);
     
     In the case in the report, set_font_authorizations setup authorizations as a
     34 byte buffer (and authlen set to 34 as one would expect). The following
@@ -1375,7 +1409,7 @@ Date:   Wed Apr 14 05:58:28 2010 -0500
     
     Conflicts:
     
-    	ChangeLog
+            ChangeLog
     
     Signed-off-by: Yaakov Selkowitz <yselkowitz@users.sourceforge.net>
 
@@ -2188,7 +2222,7 @@ Date:   Tue Jun 19 10:38:02 2007 -0400
     This patch adds a new FPE type, which will match font path elements of the
     form
     
-    	catalogue:<dir>
+            catalogue:<dir>
     
     The dir specified after the catalogue: prefix will be scanned for symlinks
     and each symlink destination will be added as a local fontfile FPE.
@@ -2198,22 +2232,22 @@ Date:   Tue Jun 19 10:38:02 2007 -0400
     
     An example configuration:
     
-    	75dpi:unscaled:pri=20 -> /usr/share/X11/fonts/75dpi
-    	ghostscript:pri=60 -> /usr/share/fonts/default/ghostscript
-    	misc:unscaled:pri=10 -> /usr/share/X11/fonts/misc
-    	type1:pri=40 -> /usr/share/X11/fonts/Type1
-    	type1:pri=50 -> /usr/share/fonts/default/Type1
+            75dpi:unscaled:pri=20 -> /usr/share/X11/fonts/75dpi
+            ghostscript:pri=60 -> /usr/share/fonts/default/ghostscript
+            misc:unscaled:pri=10 -> /usr/share/X11/fonts/misc
+            type1:pri=40 -> /usr/share/X11/fonts/Type1
+            type1:pri=50 -> /usr/share/fonts/default/Type1
     
     will add /usr/share/X11/fonts/misc as the first FPE with the attribute
     'unscaled', second FPE will be /usr/share/X11/fonts/75dpi, also with
     the attribute unscaled etc.  This is functionally equivalent to setting
     the following font path:
     
-    	/usr/share/X11/fonts/misc:unscaled,
-    	/usr/share/X11/fonts/75dpi:unscaled,
-    	/usr/share/X11/fonts/Type1,
-    	/usr/share/fonts/default/Type1,
-    	/usr/share/fonts/default/ghostscript
+            /usr/share/X11/fonts/misc:unscaled,
+            /usr/share/X11/fonts/75dpi:unscaled,
+            /usr/share/X11/fonts/Type1,
+            /usr/share/fonts/default/Type1,
+            /usr/share/fonts/default/ghostscript
     
     The motivation is to let font packages add a symlink to the new font
     directory they provide instead of rewriting either the Xorg config file
