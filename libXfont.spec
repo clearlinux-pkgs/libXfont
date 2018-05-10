@@ -6,7 +6,7 @@
 #
 Name     : libXfont
 Version  : 1.5.3
-Release  : 10
+Release  : 11
 URL      : https://www.x.org/releases/individual/lib/libXfont-1.5.3.tar.bz2
 Source0  : https://www.x.org/releases/individual/lib/libXfont-1.5.3.tar.bz2
 Source99 : https://www.x.org/releases/individual/lib/libXfont-1.5.3.tar.bz2.sig
